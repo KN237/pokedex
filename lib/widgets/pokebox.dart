@@ -11,33 +11,43 @@ class PokeBox extends StatelessWidget {
   final Pokemon pokemon;
 
   Color getBoxColor() {
-    switch (pokemon.apiTypes!.first.name) {
+    switch (pokemon.apiTypes!.last.name) {
       case "Normal":
-        return CustomColor.black;
+        return const Color(0XFFA8A878);
       case "Combat":
-        return CustomColor.black;
+        return const Color(0XFFC03028);
       case "Vol":
-        return CustomColor.black;
+        return const Color(0XFFA890F0);
       case "Poison":
-        return CustomColor.black;
+        return const Color(0XFFA040A0);
       case "Sol":
-        return CustomColor.black;
+        return const Color(0XFFE0C068);
       case "Roche":
-        return CustomColor.black;
+        return const Color(0XFFB8A038);
       case "Insecte":
-        return CustomColor.black;
+        return const Color(0XFFA8B820);
       case "Spectre":
-        return CustomColor.grey;
+        return const Color(0XFF705898);
       case "Acier":
-        return CustomColor.lightGrey;
+        return const Color(0XFFB8B8D0);
       case "Feu":
-        return CustomColor.red;
+        return const Color(0XFFFA6C6C);
       case "Eau":
-        return CustomColor.blue;
+        return const Color(0XFF6890F0);
       case "Plante":
-        return CustomColor.green;
+        return const Color(0XFF48CFB2);
       case "Électrik":
-        return CustomColor.black;
+        return const Color(0XFFFFCE4B);
+      case "Psy":
+        return const Color(0XFFF85888);
+      case "Glace":
+        return const Color(0XFF98D8D8);
+      case "Dragon":
+        return const Color(0XFF7038F8);
+      case "Ténèbres":
+        return const Color(0XFF705848);
+      case "Fée":
+        return const Color(0XFFEE99AC);
       default:
         return CustomColor.lilac;
     }
@@ -48,17 +58,17 @@ class PokeBox extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: getBoxColor().withOpacity(0.8),
+        color: getBoxColor(),
       ),
       child: Stack(
         children: [
           Positioned(
-            bottom: -15,
+            bottom: -10,
             right: 0,
             child: Image.asset(
               'assets/images/pokeball.png',
               color: Colors.white.withOpacity(0.1),
-              width: 90,
+              width: 80,
             ),
           ),
           Positioned(
@@ -66,7 +76,7 @@ class PokeBox extends StatelessWidget {
             right: 0,
             child: Image.network(
               pokemon.image!,
-              width: 90,
+              width: 80,
             ),
           ),
           Positioned(
@@ -77,9 +87,8 @@ class PokeBox extends StatelessWidget {
               children: [
                 Text(
                   pokemon.name!,
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: CustomColor.white,
-                      ),
+                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                      color: CustomColor.white, fontWeight: FontWeight.bold),
                 )
               ],
             ),
@@ -88,16 +97,13 @@ class PokeBox extends StatelessWidget {
             top: 40,
             left: 10,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const SizedBox(
-                  height: 10,
-                ),
                 for (ApiType apiType in pokemon.apiTypes!)
                   Container(
-                    width: 60,
-                    height: 25,
-                    margin: const EdgeInsets.only(top: 05),
+                    height: 20,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: CustomColor.white.withOpacity(0.2),
@@ -108,7 +114,7 @@ class PokeBox extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .labelSmall!
-                            .copyWith(color: CustomColor.white, fontSize: 10),
+                            .copyWith(color: CustomColor.white, fontSize: 8),
                       ),
                     ),
                   )

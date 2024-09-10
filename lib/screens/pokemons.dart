@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:pokedex/configs/constants.dart';
 import 'package:pokedex/models/pokemon.dart';
 import 'package:pokedex/providers/pokemons_provider.dart';
+import 'package:pokedex/widgets/custom_bottom_sheet.dart';
 import 'package:pokedex/widgets/pokebox.dart';
 import 'package:provider/provider.dart';
 
@@ -85,7 +86,16 @@ class _PokemonScreenState extends State<PokemonScreen>
             titleStyle: Theme.of(context).textTheme.bodySmall!,
             bubbleColor: CustomColor.white,
             onPress: () {
+              setState(() {
+                isExpanded = false;
+              });
+
               _animationContrller.reverse();
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) => const CustomBottomSheet(),
+              );
             },
           ),
         ],
