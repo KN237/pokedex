@@ -57,9 +57,15 @@ class _CustomBottomSheetState extends State<CustomBottomSheet>
                       height: 50,
                       child: TextField(
                         keyboardType: TextInputType.text,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: CustomColor.grey,
+                            ),
                         decoration: InputDecoration(
                           hintText: 'Search for Pokemon name...',
-                          hintStyle: Theme.of(context).textTheme.bodyMedium,
+                          hintStyle:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: CustomColor.grey.withOpacity(0.8),
+                                  ),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(40),
                               borderSide: BorderSide.none),

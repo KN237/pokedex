@@ -34,6 +34,12 @@ class _PokemonScreenState extends State<PokemonScreen>
   }
 
   @override
+  void dispose() {
+    _animationContrller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -65,7 +71,7 @@ class _PokemonScreenState extends State<PokemonScreen>
                               crossAxisCount: 2,
                               mainAxisSpacing: 08,
                               crossAxisSpacing: 08,
-                              childAspectRatio: 1.3),
+                              childAspectRatio: 1.5),
                       padding: EdgeInsets.zero,
                       children: [
                         for (Pokemon pokemon
