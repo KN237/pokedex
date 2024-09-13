@@ -9,22 +9,39 @@ class Pokemon {
   String? slug;
   Stats? stats;
   List<ApiType>? apiTypes;
+  List<ApiResistance>? apiResistances;
+  List<ApiEvolution>? apiEvolutions;
+  ApiPreEvolution? apiPreEvolution;
 
-  Pokemon(
-      {this.id,
-      this.pokedexId,
-      this.name,
-      this.image,
-      this.sprite,
-      this.slug,
-      this.stats,
-      this.apiTypes});
+  Pokemon({
+    this.id,
+    this.pokedexId,
+    this.name,
+    this.image,
+    this.sprite,
+    this.slug,
+    this.stats,
+    this.apiTypes,
+    this.apiResistances,
+    this.apiEvolutions,
+    this.apiPreEvolution,
+  });
 
   factory Pokemon.fromJson(Map<String, dynamic> json) {
-    final List<ApiType>? temp = [];
+    final List<ApiType> temp = [];
+    final List<ApiEvolution> evol = [];
+    final List<ApiResistance> resist = [];
     for (var element in json["apiTypes"]) {
-      temp!.add(ApiType.fromJson(element));
+      temp.add(ApiType.fromJson(element));
     }
+    for (var element in (json["apiEvolutions"] ?? [])) {
+      evol.add(ApiEvolution.fromJson(element));
+    }
+
+    for (var element in (json["apiResistances"] ?? [])) {
+      resist.add(ApiResistance.fromJson(element));
+    }
+
     return Pokemon(
       id: json["id"],
       pokedexId: json["pokedexId"],
@@ -34,6 +51,11 @@ class Pokemon {
       slug: json["slug"],
       stats: json["stats"] == null ? null : Stats.fromJson(json["stats"]),
       apiTypes: temp,
+      apiEvolutions: evol,
+      apiPreEvolution: json["apiPreEvolution"] == "none"
+          ? null
+          : ApiPreEvolution.fromJson(json["apiPreEvolution"]),
+      apiResistances: resist,
     );
   }
 
@@ -46,6 +68,9 @@ class Pokemon {
         "slug": slug,
         "stats": stats?.toJson(),
         "apiTypes": apiTypes?.map((elt) => elt.toJson()).toList(),
+        "apiEvolutions": apiEvolutions?.map((elt) => elt.toJson()).toList(),
+        "apiPreEvolutions": apiPreEvolution!.toJson(),
+        "apiResistances": apiResistances?.map((elt) => elt.toJson()).toList(),
       };
 }
 
@@ -67,23 +92,41 @@ class Stats {
 
   factory Stats.fromJson(Map<String, dynamic> json) {
     return Stats(
-      hp: json['hp']?.toDouble(),
+      hp: json['HP']?.toDouble(),
       attack: json['attack']?.toDouble(),
       defense: json['defense']?.toDouble(),
-      specialAttack: json['specialAttack']?.toDouble(),
-      specialDefense: json['specialDefense']?.toDouble(),
+      specialAttack: json['special_attack']?.toDouble(),
+      specialDefense: json['special_defense']?.toDouble(),
       speed: json['speed']?.toDouble(),
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "hp": hp,
+        "HP": hp,
         "attack": attack,
         "defense": defense,
-        "specialAttack": specialAttack,
-        "specialDefense": specialDefense,
+        "special_attack": specialAttack,
+        "special_defense": specialDefense,
         "speed": speed,
       };
+
+  double sumAll() {
+    double temp = 0;
+    List<double?> tempList = [
+      hp,
+      attack,
+      defense,
+      specialAttack,
+      specialDefense,
+      speed
+    ];
+    for (var element in tempList) {
+      if (element != null) {
+        temp += element;
+      }
+    }
+    return temp;
+  }
 }
 
 class ApiType {
@@ -104,5 +147,70 @@ class ApiType {
   Map<String, dynamic> toJson() => {
         "name": name,
         "image": image,
+      };
+}
+
+class ApiEvolution {
+  String? name;
+  int? pokedexId;
+
+  ApiEvolution({
+    this.name,
+    this.pokedexId,
+  });
+
+  factory ApiEvolution.fromJson(Map<String, dynamic> json) => ApiEvolution(
+        name: json["name"],
+        pokedexId: json["pokedexId"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "pokedexId": pokedexId,
+      };
+}
+
+class ApiPreEvolution {
+  String? name;
+  int? pokedexIdd;
+
+  ApiPreEvolution({
+    this.name,
+    this.pokedexIdd,
+  });
+
+  factory ApiPreEvolution.fromJson(Map<String, dynamic> json) =>
+      ApiPreEvolution(
+        name: json["name"],
+        pokedexIdd: json["pokedexIdd"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "pokedexIdd": pokedexIdd,
+      };
+}
+
+class ApiResistance {
+  String? name;
+  double? damageMultiplier;
+  String? damageRelation;
+
+  ApiResistance({
+    this.name,
+    this.damageMultiplier,
+    this.damageRelation,
+  });
+
+  factory ApiResistance.fromJson(Map<String, dynamic> json) => ApiResistance(
+        name: json["name"],
+        damageMultiplier: json["damage_multiplier"]?.toDouble(),
+        damageRelation: json["damage_relation"].toString().toUpperCase(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "damage_multiplier": damageMultiplier,
+        "damage_relation": name!.toLowerCase(),
       };
 }
