@@ -1,4 +1,4 @@
-<center>
+<div align='center'>
 <image src='./assets/images/splash2.png' alt='logo' width="250px"/>
 
 
@@ -15,4 +15,4 @@
 <image src='./assets/images/1.jpg' alt='logo' width="150px"/> 
  <image src='./assets/images/2.jpg' alt='logo' width="150px"/>
 
-</center>
+</div>
