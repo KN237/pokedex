@@ -12,7 +12,7 @@ class PokemonEvolution extends StatelessWidget {
     List<Pokemon> descendants = [];
     if (pokemon.apiPreEvolution != null) {
       descendants.add(
-        context.watch<PokemonsProvider>().pokemon.firstWhere(
+        context.read<PokemonsProvider>().pokemon.firstWhere(
             (elt) => elt.pokedexId == pokemon.apiPreEvolution!.pokedexIdd),
       );
 
@@ -23,12 +23,16 @@ class PokemonEvolution extends StatelessWidget {
 
     if (pokemon.apiEvolutions!.isNotEmpty) {
       for (var element in pokemon.apiEvolutions!) {
-        descendants.add(
-          context
-              .watch<PokemonsProvider>()
-              .pokemon
-              .firstWhere((elt) => elt.pokedexId == element.pokedexId),
-        );
+        if (element.pokedexId! <=
+            context.read<PokemonsProvider>().pokemon.length) {
+          descendants.add(
+            context
+                .read<PokemonsProvider>()
+                .pokemon
+                .where((elt) => elt.pokedexId == element.pokedexId)
+                .first,
+          );
+        }
       }
     }
 
@@ -45,59 +49,67 @@ class PokemonEvolution extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            for (var i = 0; i < descendants.length; i++)
-              if (i + 1 < descendants.length)
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/pokeball.png',
-                                  width: 100,
-                                  color: CustomColor.grey.withOpacity(0.2),
-                                ),
-                                Image.network(
-                                  descendants[i].image!,
-                                  width: 120,
-                                ),
-                              ],
-                            ),
-                            Text(descendants[i].name!)
-                          ],
-                        ),
-                        const Icon(Icons.arrow_right_alt),
-                        Column(
-                          children: [
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/pokeball.png',
-                                  width: 100,
-                                  color: CustomColor.grey.withOpacity(0.2),
-                                ),
-                                Image.network(
-                                  descendants[i + 1].image!,
-                                  width: 120,
-                                ),
-                              ],
-                            ),
-                            Text(descendants[i + 1].name!)
-                          ],
-                        ),
-                      ],
-                    ),
-                    Divider(
-                      color: CustomColor.grey.withOpacity(0.2),
-                    ),
-                  ],
-                )
+            if (descendants.length < 2)
+              const Center(
+                child: Text(
+                  'Rien à afficher ici !',
+                  style: TextStyle(color: CustomColor.grey),
+                ),
+              ),
+            if (descendants.length >= 2)
+              for (var i = 0; i < descendants.length; i++)
+                if (i + 1 < descendants.length)
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/pokeball.png',
+                                    width: 100,
+                                    color: CustomColor.grey.withOpacity(0.2),
+                                  ),
+                                  Image.network(
+                                    descendants[i].image!,
+                                    width: 120,
+                                  ),
+                                ],
+                              ),
+                              Text(descendants[i].name!)
+                            ],
+                          ),
+                          const Icon(Icons.arrow_right_alt),
+                          Column(
+                            children: [
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/pokeball.png',
+                                    width: 100,
+                                    color: CustomColor.grey.withOpacity(0.2),
+                                  ),
+                                  Image.network(
+                                    descendants[i + 1].image!,
+                                    width: 120,
+                                  ),
+                                ],
+                              ),
+                              Text(descendants[i + 1].name!)
+                            ],
+                          ),
+                        ],
+                      ),
+                      Divider(
+                        color: CustomColor.grey.withOpacity(0.2),
+                      ),
+                    ],
+                  )
           ],
         ),
       ),
