@@ -13,7 +13,7 @@
 </p>
 
 ## :page_with_curl: About
-<p align='center'> This repository contains a monorepo of the 1st version of my Anime app.</p>
+<p align='center'> This repository contains a repo of the 1st version of my Pokedex app.</p>
 
 <div align='center'>
 <image src='./assets/images/1.jpg' alt='logo' width="150px"/> 
